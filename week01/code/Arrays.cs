@@ -8,12 +8,20 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Plan:
+        // 1. Create an array of type double with size 'length'.
+        // 2. Loop from 0 to length - 1.
+        // 3. At each position i, calculate the multiple: number * (i + 1).
+        //    (i + 1) because we want to start from multiple 1, not 0.
+        // 4. Store the calculated multiple at position i in the array.
+        // 5. Finally, return the array with the calculated multiples.
 
-        return []; // replace this return statement with your own
+        var multiples = new double[length];
+        for (int i = 0; i < length; i++)
+        {
+            multiples[i] = number * (i + 1);
+        }
+        return multiples;
     }
 
     /// <summary>
@@ -23,11 +31,30 @@ public static class Arrays
     ///
     /// Because a list is dynamic, this function will modify the existing data list rather than returning a new list.
     /// </summary>
+
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Plan:
+        // 1. The list should be rotated to the right by 'amount' positions.
+        // 2. To do this, we can take the last 'amount' elements and move them to the front.
+        // 3. The remaining elements will be moved after those.
+        // 4. We will use GetRange to get the parts:
+        //    - lastPart: the last 'amount' elements
+        //    - firstPart: the first data.Count - amount elements
+        // 5. Clear the original list and then add lastPart first and then firstPart.
+        // 6. This way, we modify the original list as required.
+
+        int count = data.Count;
+        if (amount <= 0 || amount > count)
+            return; // Do nothing if amount is out of the valid range.
+
+        var lastPart = data.GetRange(count - amount, amount);     // Last 'amount' elements
+        var firstPart = data.GetRange(0, count - amount);         // First remaining elements
+
+        data.Clear();                      // Clear the original list
+        data.AddRange(lastPart);           // Add the right part first
+        data.AddRange(firstPart);          // Add the rest at the end
     }
+
+
 }
