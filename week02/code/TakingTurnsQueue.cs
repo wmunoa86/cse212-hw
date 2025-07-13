@@ -40,12 +40,19 @@ public class TakingTurnsQueue
         else
         {
             Person person = _people.Dequeue();
-            if (person.Turns > 1)
+            if (person.Turns > 0) // If the person has turns left, they go to the back of the queue
             {
                 person.Turns -= 1;
-                _people.Enqueue(person);
+                if (person.Turns > 0) // Only add back if they still have turns left
+                {
+                    _people.Enqueue(person);
+                }
             }
-
+            else
+            {
+                _people.Enqueue(person); // If they have no turns left, they are added back to the queue
+            }
+            
             return person;
         }
     }
