@@ -149,3 +149,24 @@ public static class SetsAndMaps
     {
         const string uri = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
         using var client = new HttpClient();
+        using var getRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+        using var jsonStream = client.Send(getRequestMessage).Content.ReadAsStream();
+        using var reader = new StreamReader(jsonStream);
+        var json = reader.ReadToEnd();
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+        var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
+
+        var summaries = new List<string>();
+
+        if (featureCollection?.Features != null)
+        {
+            foreach (var feature in featureCollection.Features)
+            {
+                summaries.Add($"{feature.Properties.Place} - Mag {feature.Properties.Mag}");
+            }
+        }
+
+        return summaries.ToArray();
+    }
+}
